@@ -1,4 +1,4 @@
-# Image-Classification-using-Keras
+# Image-Classification-App-using-Keras
 
 <div style="text-align:center;">
 
