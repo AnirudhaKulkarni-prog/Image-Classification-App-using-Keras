@@ -30,7 +30,5 @@ flutter run
 
 ![](README-Requirements/GIF-200430_131037.gif)
 
-<br>
 
 © 2020 Sherwyn D'souza
-
