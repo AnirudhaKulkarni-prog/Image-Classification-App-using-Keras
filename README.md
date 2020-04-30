@@ -13,7 +13,7 @@ Simple Image classification App using Keras and Flutter to classify whether the 
 1. Clone the repository
 
 ```bash
-git clone <this_repo_url>
+git clone https://github.com/sherwyn11/Image-Classification-App-using-Keras.git
 ```
 2. From the root folder, `Image-Classification-App-using-Keras`, run the Flutter application
 
