@@ -15,28 +15,26 @@ Future<void> main() async {
 }
 
 class MyApp extends StatefulWidget {
-  // This widget is the root of your application.
-
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  CameraController controller;
+  CameraController my_controller;
   bool isDetecting = false;
-  List<dynamic> preds = [];
+  List<dynamic> predictions = [];
 
   @override
   void initState() {
     super.initState();
-    controller = CameraController(cameras[0], ResolutionPreset.ultraHigh);
+    my_controller = CameraController(cameras[0], ResolutionPreset.ultraHigh);
 
-    controller.initialize().then((_) {
+    my_controller.initialize().then((_) {
       if (!mounted) {
         return;
       }
       setState(() {});
-      controller.startImageStream((CameraImage img) {
+      my_controller.startImageStream((CameraImage img) {
         if (!isDetecting) {
           isDetecting = true;
           Tflite.runModelOnFrame(
@@ -47,9 +45,8 @@ class _MyAppState extends State<MyApp> {
             imageWidth: img.width,
           ).then((recognitions) {
             setState(() {
-              preds = recognitions;
+              predictions = recognitions;
             });
-            // setRecognitions(recognitions, img.height, img.width);
             print(recognitions);
             isDetecting = false;
           });
@@ -60,7 +57,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
-    controller?.dispose();
+    my_controller?.dispose();
     Tflite.close();
     super.dispose();
   }
@@ -76,8 +73,8 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text("Image Classifier"),
         ),
-        body: controller.value.isInitialized
-            ? MainScreen(controller: controller, preds: preds)
+        body: my_controller.value.isInitialized
+            ? MainScreen(my_controller: my_controller, predictions: predictions)
             : Container(
                 child: Center(
                   child: CircularProgressIndicator(),
@@ -91,12 +88,12 @@ class _MyAppState extends State<MyApp> {
 class MainScreen extends StatelessWidget {
   const MainScreen({
     Key key,
-    @required this.controller,
-    @required this.preds,
+    @required this.my_controller,
+    @required this.predictions,
   }) : super(key: key);
 
-  final CameraController controller;
-  final List preds;
+  final CameraController my_controller;
+  final List predictions;
 
   @override
   Widget build(BuildContext context) {
@@ -107,21 +104,21 @@ class MainScreen extends StatelessWidget {
         SizedBox(
           height: deviceData.size.height * 0.7,
           child: AspectRatio(
-              aspectRatio: controller.value.aspectRatio,
-              child: CameraPreview(controller)),
+              aspectRatio: my_controller.value.aspectRatio,
+              child: CameraPreview(my_controller)),
         ),
-        preds.length > 0
+        predictions.length > 0
             ? Expanded(
                 child: ListView.builder(
                     padding: const EdgeInsets.all(8),
-                    itemCount: preds.length,
+                    itemCount: predictions.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
                         height: 50,
                         color: Colors.blue,
                         child: Center(
                             child: Text(
-                          '${preds[index]['label']} ${preds[index]['confidence']}',
+                          '${predictions[index]['label']} ${predictions[index]['confidence']}',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 25,
