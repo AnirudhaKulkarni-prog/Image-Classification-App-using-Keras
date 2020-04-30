@@ -15,7 +15,7 @@ Simple Image classification App using Keras and Flutter to classify whether the 
 ```bash
 git clone <this_repo_url>
 ```
-2. From the root folder, `Image-Classification-using-Keras`, run the Flutter application
+2. From the root folder, `Image-Classification-App-using-Keras`, run the Flutter application
 
 ```bash
 cd image_classification_app
